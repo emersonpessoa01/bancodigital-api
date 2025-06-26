@@ -4,10 +4,7 @@ import br.com.cdb.bancodigital_api.dto.ContaDTO;
 import br.com.cdb.bancodigital_api.service.ContaService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/contas")
@@ -19,5 +16,9 @@ public class ContaController {
     @PostMapping
     public ResponseEntity<ContaDTO> criar(@RequestBody @Valid ContaDTO dto){
         return ResponseEntity.ok(service.salvar(dto));
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<ContaDTO> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.buscarPorId(id));
     }
 }
