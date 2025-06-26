@@ -9,6 +9,9 @@ import br.com.cdb.bancodigital_api.repository.ContaRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ContaService {
     private final ContaRepository contaRepository;
@@ -31,5 +34,11 @@ public class ContaService {
     public ContaDTO buscarPorId(Long id){
         Conta conta = contaRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Conta não encontrada"));
         return mapper.map(conta, ContaDTO.class);
+    }
+    public List<ContaDTO> listarTodas(){
+        return contaRepository.findAll()
+                .stream()
+                .map(conta -> mapper.map(conta,ContaDTO.class))
+                .collect(Collectors.toList());
     }
 }
