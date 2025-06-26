@@ -26,4 +26,14 @@ public class ContaController {
         service.deletar(id);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/{id}/saldo")
+    public ResponseEntity<Double> consultarSaldo(@PathVariable Long id) {
+        Double saldo = service.consultarSaldo(id);
+        return ResponseEntity.ok(saldo);
+    }
+    @PostMapping("/{id}/transferencia")
+    public ResponseEntity<Void> transferir(@PathVariable Long id, @RequestBody @Valid TrasnferenciaDTO dto) {
+        service.transferir(id, dto);
+        return ResponseEntity.noContent().build();
+    }
 }
