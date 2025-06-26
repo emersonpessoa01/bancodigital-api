@@ -41,4 +41,17 @@ public class ContaService {
                 .map(conta -> mapper.map(conta,ContaDTO.class))
                 .collect(Collectors.toList());
     }
+    public ContaDTO atualizar(Long id, ContaDTO dto){
+        Conta conta = contaRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Conta não encontrada"));
+
+        conta.setNumero(dto.getNumero());
+        conta.setAgencia(dto.getAgencia());
+        conta.setSaldo(dto.getSaldo());
+
+        if(dto.getClienteId() !=null && !dto.getClienteId().equals(conta.getCliente().getId())){
+            Cliente novoCliente = clienteRepository.findById(dto.getClienteId()).orElseThrow(()->new ResourceNotFoundException("Cliente não encontrado"));
+            conta.setCliente(novoCliente);
+        }
+        return mapper.map(contaRepository.save(conta), ContaDTO.class);
+    }
 }
