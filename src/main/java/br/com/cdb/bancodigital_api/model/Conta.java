@@ -1,7 +1,14 @@
 package br.com.cdb.bancodigital_api.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Conta {
 
     @Id
