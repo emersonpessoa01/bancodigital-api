@@ -28,4 +28,8 @@ public class ContaService {
         conta.setCliente(cliente);
         return mapper.map(contaRepository.save(conta), ContaDTO.class);
     }
+    public ContaDTO buscarPorId(Long id){
+        Conta conta = contaRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Conta não encontrada"));
+        return mapper.map(conta, ContaDTO.class);
+    }
 }
