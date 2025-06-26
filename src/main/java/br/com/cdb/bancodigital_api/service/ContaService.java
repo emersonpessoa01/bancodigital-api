@@ -54,4 +54,8 @@ public class ContaService {
         }
         return mapper.map(contaRepository.save(conta), ContaDTO.class);
     }
+    public void deletar(Long id){
+        Conta conta = contaRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Conta não encontrada"));
+        contaRepository.delete(conta);
+    }
 }
