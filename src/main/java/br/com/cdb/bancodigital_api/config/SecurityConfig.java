@@ -11,12 +11,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**", "/clientes/**"))
-                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+                .csrf(csrf -> csrf.disable()) // desativa CSRF completamente
+                .headers(headers -> headers.frameOptions(frame -> frame.disable())) // permite H2
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/clientes/**").permitAll()
-                        .anyRequest().permitAll()
+                        .requestMatchers("/contas/**").permitAll()
+                        .anyRequest().authenticated() // exige autenticação nos demais
                 )
                 .build();
     }
