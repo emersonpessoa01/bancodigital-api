@@ -1,6 +1,7 @@
 package br.com.cdb.bancodigital_api.controller;
 
 import br.com.cdb.bancodigital_api.dto.ContaDTO;
+import br.com.cdb.bancodigital_api.dto.TransferenciaDTO;
 import br.com.cdb.bancodigital_api.service.ContaService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class ContaController {
         return ResponseEntity.ok(saldo);
     }
     @PostMapping("/{id}/transferencia")
-    public ResponseEntity<Void> transferir(@PathVariable Long id, @RequestBody @Valid TrasnferenciaDTO dto) {
+    public ResponseEntity<Void> transferir(@PathVariable Long id, @RequestBody @Valid TransferenciaDTO dto) {
         service.transferir(id, dto);
         return ResponseEntity.noContent().build();
     }
