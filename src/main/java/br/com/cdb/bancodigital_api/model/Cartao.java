@@ -22,4 +22,5 @@ public class Cartao {
     @ManyToOne
     @JoinColumn(name = "conta_id")
     private Conta conta; // Associação com a conta bancária a que o cartão pertence
+
 }

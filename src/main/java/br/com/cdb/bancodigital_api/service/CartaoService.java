@@ -7,6 +7,7 @@ import br.com.cdb.bancodigital_api.model.Conta;
 import br.com.cdb.bancodigital_api.repository.CartaoRepository;
 import br.com.cdb.bancodigital_api.repository.ContaRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,8 @@ import java.util.stream.Collectors;
 public class CartaoService {
     private final CartaoRepository cartaoRepository;
     private final ContaRepository contaRepository;
+
+    @Autowired
     private final ModelMapper mapper;
 
     public CartaoService(CartaoRepository cartaoRepository, ContaRepository contaRepository) {

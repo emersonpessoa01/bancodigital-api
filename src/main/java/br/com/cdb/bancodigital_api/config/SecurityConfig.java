@@ -17,6 +17,7 @@ public class SecurityConfig {
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/clientes/**").permitAll()
                         .requestMatchers("/contas/**").permitAll()
+                        .requestMatchers("/cartoes/**").permitAll()
                         .anyRequest().authenticated() // exige autenticação nos demais
                 )
                 .build();
