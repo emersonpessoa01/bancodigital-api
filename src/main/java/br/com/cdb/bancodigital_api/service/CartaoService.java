@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CartaosService {
+public class CartaoService {
     private final CartaoRepository cartaoRepository;
     private final ContaRepository contaRepository;
     private final ModelMapper mapper;
 
-    public CartaosService(CartaoRepository cartaoRepository, ContaRepository contaRepository) {
+    public CartaoService(CartaoRepository cartaoRepository, ContaRepository contaRepository) {
         this.cartaoRepository = cartaoRepository;
         this.contaRepository = contaRepository;
         this.mapper = new ModelMapper();
