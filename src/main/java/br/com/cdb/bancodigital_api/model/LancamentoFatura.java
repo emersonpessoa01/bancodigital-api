@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "lancamentos_cartao")
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LancamentoCartao {
+public class LancamentoFatura {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
