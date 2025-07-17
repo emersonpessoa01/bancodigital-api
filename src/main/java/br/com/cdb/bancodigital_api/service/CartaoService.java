@@ -105,6 +105,7 @@ public class CartaoService {
                     .descricao(dto.getDescricao())
                     .valor(dto.getValor())
                     .data(LocalDate.now())
+                    .pago(false)
                     .cartao(cartao)
                     .build();
 
@@ -175,7 +176,7 @@ public class CartaoService {
                         .descricao(l.getDescricao())
                         .valor(l.getValor())
                         .data(l.getData())
-                        .pago(true)
+                        .pago(l.getPago())
                         .build())
                 .collect(Collectors.toList());
 
@@ -188,4 +189,43 @@ public class CartaoService {
                 .lancamentos(lancamentoDTOs)
                 .build();
     }
+    @Transactional
+    public void pagarFatura(Long cartaoId) {
+        Cartao cartao = cartaoRepository.findById(cartaoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cartão não encontrado"));
+
+        if (!"crédito".equalsIgnoreCase(cartao.getTipo())) {
+            throw new IllegalArgumentException("Pagamento de fatura é permitido apenas para cartões de crédito.");
+        }
+
+        List<LancamentoFatura> lancamentos = lancamentoFaturaRepository.findByCartaoId(cartaoId);
+
+        double totalFatura = lancamentos.stream()
+                .filter(l -> Boolean.FALSE.equals(l.getPago()))
+                .mapToDouble(LancamentoFatura::getValor)
+                .sum();
+
+        Conta conta = cartao.getConta();
+
+        if (conta.getSaldo() < totalFatura) {
+            throw new IllegalArgumentException("Saldo insuficiente para pagar a fatura.");
+        }
+
+        // Debita da conta
+        conta.setSaldo(conta.getSaldo() - totalFatura);
+        contaRepository.save(conta);
+
+        // Marca os lançamentos como pagos
+        lancamentos.stream()
+                .filter(l -> Boolean.FALSE.equals(l.getPago()))
+                .forEach(l -> {
+                    l.setPago(true);
+                    lancamentoFaturaRepository.save(l);
+                });
+
+        // Zera o valor da fatura acumulada no cartão
+        cartao.setFatura(0.0);
+        cartaoRepository.save(cartao);
+    }
+
 }
