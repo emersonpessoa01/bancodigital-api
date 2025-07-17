@@ -83,6 +83,12 @@ public class ContaController {
         service.aplicarTaxaManutencao(id);
         return ResponseEntity.ok("Taxa de manutenção aplicada com sucesso.");
     }
+    @PutMapping("/{id}/rendimentos")
+    public ResponseEntity<String> aplicarRendimentos(@PathVariable Long id) {
+        service.aplicarRendimentos(id);
+        return ResponseEntity.ok("Rendimentos aplicados com sucesso.");
+    }
+
 
 
 
