@@ -5,9 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class DepositoDTO {
+public class TransacaoDTO {
 
-    @NotNull(message = "Valor do depósito é obrigatório")
+    @NotNull(message = "Valor é obrigatório")
     @Min(value = 0, message = "Valor deve ser maior que zero")
     private Double valor;
 }
