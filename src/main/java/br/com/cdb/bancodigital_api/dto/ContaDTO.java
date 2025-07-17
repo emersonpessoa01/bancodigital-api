@@ -15,4 +15,6 @@ public class ContaDTO {
     private String agencia;
     private Double saldo;
     private Long clienteId; // ID do cliente associado à conta
+    private String tipo;
+
 }

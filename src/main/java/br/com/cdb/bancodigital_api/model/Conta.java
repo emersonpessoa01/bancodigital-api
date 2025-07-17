@@ -18,6 +18,8 @@ public class Conta {
     private String numero;
     private String agencia;
     private Double saldo;
+    private String tipo; // valores possíveis: "corrente" ou "poupanca"
+
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
