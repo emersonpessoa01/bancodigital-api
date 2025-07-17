@@ -4,6 +4,7 @@ import br.com.cdb.bancodigital_api.dto.ContaDTO;
 import br.com.cdb.bancodigital_api.dto.PixRequestDTO;
 import br.com.cdb.bancodigital_api.dto.TransacaoDTO;
 import br.com.cdb.bancodigital_api.dto.TransferenciaDTO;
+import br.com.cdb.bancodigital_api.enums.TipoConta;
 import br.com.cdb.bancodigital_api.exception.ResourceNotFoundException;
 import br.com.cdb.bancodigital_api.model.Cliente;
 import br.com.cdb.bancodigital_api.model.Conta;
@@ -34,15 +35,17 @@ public class ContaService {
 
         Conta conta = mapper.map(dto, Conta.class);
 
-// Validação simples
-        if (!conta.getTipo().equalsIgnoreCase("corrente") &&
-                !conta.getTipo().equalsIgnoreCase("poupanca")) {
-            throw new IllegalArgumentException("Tipo de conta inválido: deve ser 'corrente' ou 'poupanca'");
+        // Validação automática via enum (opcional, se quiser controlar melhor)
+        if (conta.getTipo() == null) {
+            throw new IllegalArgumentException("Tipo de conta é obrigatório");
         }
 
         conta.setCliente(cliente);
-        return mapper.map(contaRepository.save(conta), ContaDTO.class);
+        contaRepository.save(conta);
+
+        return mapper.map(conta, ContaDTO.class);
     }
+
 
     public ContaDTO buscarPorId(Long id) {
         Conta conta = contaRepository.findById(id)
@@ -160,8 +163,8 @@ public class ContaService {
         Conta conta = contaRepository.findById(contaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Conta não encontrada"));
 
-        if (!"corrente".equalsIgnoreCase(conta.getTipo())) {
-            throw new IllegalArgumentException("Taxa de manutenção só se aplica a contas do tipo corrente");
+        if (conta.getTipo() != TipoConta.CORRENTE) {
+            throw new IllegalArgumentException("Taxa de manutenção só se aplica a contas do tipo CORRENTE");
         }
 
         double taxa = 20.00;
@@ -173,6 +176,22 @@ public class ContaService {
         conta.setSaldo(conta.getSaldo() - taxa);
         contaRepository.save(conta);
     }
+
+    public void aplicarRendimentos(Long contaId) {
+        Conta conta = contaRepository.findById(contaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Conta não encontrada"));
+
+        if (conta.getTipo() != TipoConta.POUPANCA) {
+            throw new IllegalArgumentException("Rendimentos só se aplicam a contas do tipo POUPANÇA");
+        }
+
+        double taxaRendimento = 0.005; // 0.5%
+        double rendimento = conta.getSaldo() * taxaRendimento;
+
+        conta.setSaldo(conta.getSaldo() + rendimento);
+        contaRepository.save(conta);
+    }
+
 
 
 }
