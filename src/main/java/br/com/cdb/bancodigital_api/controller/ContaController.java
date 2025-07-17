@@ -1,6 +1,7 @@
 package br.com.cdb.bancodigital_api.controller;
 
 import br.com.cdb.bancodigital_api.dto.ContaDTO;
+import br.com.cdb.bancodigital_api.dto.PixRequestDTO;
 import br.com.cdb.bancodigital_api.dto.TransferenciaDTO;
 import br.com.cdb.bancodigital_api.service.ContaService;
 import jakarta.validation.Valid;
@@ -55,4 +56,12 @@ public class ContaController {
         service.transferir(id, dto);
         return ResponseEntity.ok().build();
     }
+    @PostMapping("/{id}/pix")
+    public ResponseEntity<String> realizarPix(
+            @PathVariable Long id,
+            @RequestBody @Valid PixRequestDTO dto) {
+        service.realizarPix(id, dto);
+        return ResponseEntity.ok("Pix realizado com sucesso.");
+    }
+
 }
