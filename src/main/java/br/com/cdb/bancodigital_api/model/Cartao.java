@@ -18,12 +18,13 @@ public class Cartao {
     private String bandeira;
     private String tipo; // Ex: "Crédito", "Débito", "Múltiplo"
     private Double limite;
-    private Boolean ativo = true; // Ativo por padrão
     private Double fatura = 0.0;  // Soma dos pagamentos realizados com cartão de crédito
 
 
     @ManyToOne
     @JoinColumn(name = "conta_id")
     private Conta conta; // Associação com a conta bancária a que o cartão pertence
+
+    private Boolean status; // true = ativo, false = inativo
 
 }
