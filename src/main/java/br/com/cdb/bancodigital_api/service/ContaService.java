@@ -33,6 +33,13 @@ public class ContaService {
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
         Conta conta = mapper.map(dto, Conta.class);
+
+// Validação simples
+        if (!conta.getTipo().equalsIgnoreCase("corrente") &&
+                !conta.getTipo().equalsIgnoreCase("poupanca")) {
+            throw new IllegalArgumentException("Tipo de conta inválido: deve ser 'corrente' ou 'poupanca'");
+        }
+
         conta.setCliente(cliente);
         return mapper.map(contaRepository.save(conta), ContaDTO.class);
     }
@@ -149,6 +156,23 @@ public class ContaService {
         contaRepository.save(conta);
     }
 
+    public void aplicarTaxaManutencao(Long contaId) {
+        Conta conta = contaRepository.findById(contaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Conta não encontrada"));
+
+        if (!"corrente".equalsIgnoreCase(conta.getTipo())) {
+            throw new IllegalArgumentException("Taxa de manutenção só se aplica a contas do tipo corrente");
+        }
+
+        double taxa = 20.00;
+
+        if (conta.getSaldo() < taxa) {
+            throw new IllegalArgumentException("Saldo insuficiente para aplicar a taxa de manutenção");
+        }
+
+        conta.setSaldo(conta.getSaldo() - taxa);
+        contaRepository.save(conta);
+    }
 
 
 }
