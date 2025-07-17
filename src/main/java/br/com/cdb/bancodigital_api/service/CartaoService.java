@@ -1,9 +1,6 @@
 package br.com.cdb.bancodigital_api.service;
 
-import br.com.cdb.bancodigital_api.dto.AlterarLimiteDTO;
-import br.com.cdb.bancodigital_api.dto.AtualizarStatusCartaoDTO;
-import br.com.cdb.bancodigital_api.dto.CartaoDTO;
-import br.com.cdb.bancodigital_api.dto.PagamentoCartaoDTO;
+import br.com.cdb.bancodigital_api.dto.*;
 import br.com.cdb.bancodigital_api.exception.ResourceNotFoundException;
 import br.com.cdb.bancodigital_api.model.Cartao;
 import br.com.cdb.bancodigital_api.model.Conta;
@@ -131,5 +128,14 @@ public class CartaoService {
         cartao.setStatus(dto.getStatus());
         cartaoRepository.save(cartao);
     }
+    @Transactional
+    public void alterarSenha(Long id, AlterarSenhaCartaoDTO dto) {
+        Cartao cartao = cartaoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cartão não encontrado"));
+
+        cartao.setSenha(dto.getNovaSenha());
+        cartaoRepository.save(cartao);
+    }
+
 }
 
