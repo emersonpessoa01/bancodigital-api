@@ -68,6 +68,11 @@ public class CartaoController {
     public ResponseEntity<FaturaDTO> consultarFatura(@PathVariable Long id) {
         return ResponseEntity.ok(service.consultarFatura(id));
     }
+    @PostMapping("/{id}/fatura/pagamento")
+    public ResponseEntity<Void> pagarFatura(@PathVariable Long id) {
+        service.pagarFatura(id);
+        return ResponseEntity.ok().build();
+    }
 
 
 
