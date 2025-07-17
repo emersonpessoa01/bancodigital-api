@@ -3,6 +3,9 @@ package br.com.cdb.bancodigital_api.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "cartoes")
 @Getter
@@ -27,6 +30,8 @@ public class Cartao {
 
     private Boolean status; // true = ativo, false = inativo
     private String senha;
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LancamentoFatura> lancamentos = new ArrayList<>();
 
 
 }
