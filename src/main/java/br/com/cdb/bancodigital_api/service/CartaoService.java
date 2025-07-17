@@ -4,8 +4,10 @@ import br.com.cdb.bancodigital_api.dto.*;
 import br.com.cdb.bancodigital_api.exception.ResourceNotFoundException;
 import br.com.cdb.bancodigital_api.model.Cartao;
 import br.com.cdb.bancodigital_api.model.Conta;
+import br.com.cdb.bancodigital_api.model.LancamentoCartao;
 import br.com.cdb.bancodigital_api.repository.CartaoRepository;
 import br.com.cdb.bancodigital_api.repository.ContaRepository;
+import br.com.cdb.bancodigital_api.repository.LancamentoCartaoRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +20,15 @@ import java.util.stream.Collectors;
 public class CartaoService {
     private final CartaoRepository cartaoRepository;
     private final ContaRepository contaRepository;
+    private final LancamentoCartaoRepository lancamentoCartaoRepository;
 
     @Autowired
     private final ModelMapper mapper;
 
-    public CartaoService(CartaoRepository cartaoRepository, ContaRepository contaRepository) {
+    public CartaoService(CartaoRepository cartaoRepository, ContaRepository contaRepository, LancamentoCartaoRepository lancamentoCartaoRepository) {
         this.cartaoRepository = cartaoRepository;
         this.contaRepository = contaRepository;
+        this.lancamentoCartaoRepository = lancamentoCartaoRepository;
         this.mapper = new ModelMapper();
     }
     public CartaoDTO salvar(CartaoDTO dto){
@@ -135,6 +139,32 @@ public class CartaoService {
 
         cartao.setSenha(dto.getNovaSenha());
         cartaoRepository.save(cartao);
+    }
+    public FaturaDTO consultarFatura(Long id) {
+        Cartao cartao = cartaoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cartão não encontrado"));
+
+        if (!"Crédito".equalsIgnoreCase(cartao.getTipo())) {
+            throw new IllegalArgumentException("Fatura disponível apenas para cartões de crédito.");
+        }
+
+        List<LancamentoCartao> lancamentos = lancamentoCartaoRepository.findByCartaoId(id);
+
+        List<LancamentoFaturaDTO> dtoList = lancamentos.stream().map(l -> new LancamentoFaturaDTO(
+                l.getDescricao(), l.getValor(), l.getData(), l.getPago()
+        )).toList();
+
+        double total = lancamentos.stream()
+                .filter(l -> !l.getPago())
+                .mapToDouble(LancamentoCartao::getValor)
+                .sum();
+
+        FaturaDTO fatura = new FaturaDTO();
+        fatura.setCartaoId(cartao.getId());
+        fatura.setTotal(total);
+        fatura.setLancamentos(dtoList);
+
+        return fatura;
     }
 
 }
