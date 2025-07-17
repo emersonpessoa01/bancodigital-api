@@ -17,5 +17,7 @@ public class CartaoDTO {
     private Double limite;
     private Long contaId; // ID da conta bancária a que o cartão pertence
     private Boolean status; // novo campo adicionado
+    private Double limiteDiario;
+
 }
 
