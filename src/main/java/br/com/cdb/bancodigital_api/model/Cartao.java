@@ -33,5 +33,8 @@ public class Cartao {
     @OneToMany(mappedBy = "cartao", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LancamentoFatura> lancamentos = new ArrayList<>();
 
+    private Double limiteDiario;
+
+
 
 }
