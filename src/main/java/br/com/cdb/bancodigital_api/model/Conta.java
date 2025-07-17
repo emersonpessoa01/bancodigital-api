@@ -2,6 +2,8 @@ package br.com.cdb.bancodigital_api.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import br.com.cdb.bancodigital_api.enums.TipoConta;
+
 
 @Entity
 @Table(name = "contas")
@@ -18,7 +20,11 @@ public class Conta {
     private String numero;
     private String agencia;
     private Double saldo;
-    private String tipo; // valores possíveis: "corrente" ou "poupanca"
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoConta tipo;
+
+    // valores possíveis: "corrente" ou "poupanca"
 
 
     @ManyToOne
