@@ -22,7 +22,9 @@ public class LancamentoFatura {
     private String descricao;
     private Double valor;
     private LocalDate data;
-    private Boolean pago;
+    @Column(nullable = false)
+    private Boolean pago = false;
+
 
     @ManyToOne
     @JoinColumn(name = "cartao_id")
