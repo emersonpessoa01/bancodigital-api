@@ -1,5 +1,7 @@
 package br.com.cdb.bancodigital_api.controller;
 
+import br.com.cdb.bancodigital_api.dto.AlterarLimiteDTO;
+import br.com.cdb.bancodigital_api.dto.AtualizarStatusCartaoDTO;
 import br.com.cdb.bancodigital_api.dto.CartaoDTO;
 import br.com.cdb.bancodigital_api.dto.PagamentoCartaoDTO;
 import br.com.cdb.bancodigital_api.service.CartaoService;
@@ -49,5 +51,17 @@ public class CartaoController {
         service.realizarPagamento(id, dto);
         return ResponseEntity.ok("Pagamento realizado com sucesso.");
     }
+    @PutMapping("/{id}/limite")
+    public ResponseEntity<String> alterarLimite(@PathVariable Long id, @RequestBody AlterarLimiteDTO dto) {
+        service.alterarLimite(id, dto);
+        return ResponseEntity.ok("Limite do cartão alterado com sucesso.");
+    }
+    @PutMapping("/{id}/status")
+    public ResponseEntity<String> atualizarStatus(@PathVariable Long id, @RequestBody AtualizarStatusCartaoDTO dto) {
+        service.atualizarStatus(id, dto);
+        return ResponseEntity.ok("Status do cartão atualizado com sucesso.");
+    }
+
+
 
 }
