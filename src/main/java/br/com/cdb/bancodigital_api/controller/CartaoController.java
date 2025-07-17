@@ -1,6 +1,7 @@
 package br.com.cdb.bancodigital_api.controller;
 
 import br.com.cdb.bancodigital_api.dto.CartaoDTO;
+import br.com.cdb.bancodigital_api.dto.PagamentoCartaoDTO;
 import br.com.cdb.bancodigital_api.service.CartaoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -43,4 +44,10 @@ public class CartaoController {
         service.deletar(id);
         return ResponseEntity.noContent().build();
     }
+    @PostMapping("/{id}/pagamento")
+    public ResponseEntity<String> realizarPagamento(@PathVariable Long id, @RequestBody PagamentoCartaoDTO dto) {
+        service.realizarPagamento(id, dto);
+        return ResponseEntity.ok("Pagamento realizado com sucesso.");
+    }
+
 }
