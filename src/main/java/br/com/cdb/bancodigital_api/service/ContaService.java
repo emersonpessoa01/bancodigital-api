@@ -199,7 +199,7 @@ public class ContaService {
         Cartao cartao = cartaoRepository.findById(cartaoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cartão não encontrado"));
 
-        if (Boolean.FALSE.equals(cartao.getAtivo())) {
+        if (Boolean.FALSE.equals(cartao.getStatus())) {
             throw new IllegalStateException("Cartão está inativo");
         }
 
