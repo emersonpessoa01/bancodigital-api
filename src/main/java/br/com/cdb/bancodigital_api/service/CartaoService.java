@@ -1,11 +1,13 @@
 package br.com.cdb.bancodigital_api.service;
 
 import br.com.cdb.bancodigital_api.dto.CartaoDTO;
+import br.com.cdb.bancodigital_api.dto.PagamentoCartaoDTO;
 import br.com.cdb.bancodigital_api.exception.ResourceNotFoundException;
 import br.com.cdb.bancodigital_api.model.Cartao;
 import br.com.cdb.bancodigital_api.model.Conta;
 import br.com.cdb.bancodigital_api.repository.CartaoRepository;
 import br.com.cdb.bancodigital_api.repository.ContaRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,4 +69,33 @@ public class CartaoService {
                 .orElseThrow(() -> new ResourceNotFoundException("Cartão não encontrado"));
         cartaoRepository.delete(cartao);
     }
+    @Transactional
+    public void realizarPagamento(Long cartaoId, PagamentoCartaoDTO dto) {
+        Cartao cartao = cartaoRepository.findById(cartaoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cartão não encontrado"));
+
+        if (Boolean.FALSE.equals(cartao.getAtivo())) {
+            throw new IllegalStateException("Cartão está inativo");
+        }
+
+        if ("crédito".equalsIgnoreCase(cartao.getTipo())) {
+            if (dto.getValor() > cartao.getLimite()) {
+                throw new IllegalArgumentException("Valor excede o limite disponível");
+            }
+
+            cartao.setLimite(cartao.getLimite() - dto.getValor());
+            cartao.setFatura(cartao.getFatura() + dto.getValor());
+        } else if ("débito".equalsIgnoreCase(cartao.getTipo())) {
+            Conta conta = cartao.getConta();
+            if (dto.getValor() > conta.getSaldo()) {
+                throw new IllegalArgumentException("Saldo insuficiente na conta");
+            }
+
+            conta.setSaldo(conta.getSaldo() - dto.getValor());
+            contaRepository.save(conta);
+        }
+
+        cartaoRepository.save(cartao);
+    }
+
 }
