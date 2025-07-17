@@ -1,15 +1,15 @@
 package br.com.cdb.bancodigital_api.service;
 
-import br.com.cdb.bancodigital_api.dto.ContaDTO;
-import br.com.cdb.bancodigital_api.dto.PixRequestDTO;
-import br.com.cdb.bancodigital_api.dto.TransacaoDTO;
-import br.com.cdb.bancodigital_api.dto.TransferenciaDTO;
+import br.com.cdb.bancodigital_api.dto.*;
 import br.com.cdb.bancodigital_api.enums.TipoConta;
 import br.com.cdb.bancodigital_api.exception.ResourceNotFoundException;
+import br.com.cdb.bancodigital_api.model.Cartao;
 import br.com.cdb.bancodigital_api.model.Cliente;
 import br.com.cdb.bancodigital_api.model.Conta;
+import br.com.cdb.bancodigital_api.repository.CartaoRepository;
 import br.com.cdb.bancodigital_api.repository.ClienteRepository;
 import br.com.cdb.bancodigital_api.repository.ContaRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +21,13 @@ public class ContaService {
 
     private final ContaRepository contaRepository;
     private final ClienteRepository clienteRepository;
+    private final CartaoRepository cartaoRepository;
     private final ModelMapper mapper;
 
-    public ContaService(ContaRepository contaRepository, ClienteRepository clienteRepository) {
+    public ContaService(ContaRepository contaRepository, ClienteRepository clienteRepository, CartaoRepository cartaoRepository) {
         this.contaRepository = contaRepository;
         this.clienteRepository = clienteRepository;
+        this.cartaoRepository = cartaoRepository;
         this.mapper = new ModelMapper();
     }
 
@@ -192,6 +194,34 @@ public class ContaService {
         contaRepository.save(conta);
     }
 
+    @Transactional
+    public void realizarPagamento(Long cartaoId, PagamentoCartaoDTO dto) {
+        Cartao cartao = cartaoRepository.findById(cartaoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cartão não encontrado"));
+
+        if (Boolean.FALSE.equals(cartao.getAtivo())) {
+            throw new IllegalStateException("Cartão está inativo");
+        }
+
+        if ("crédito".equalsIgnoreCase(cartao.getTipo())) {
+            if (dto.getValor() > cartao.getLimite()) {
+                throw new IllegalArgumentException("Valor excede o limite disponível");
+            }
+
+            cartao.setLimite(cartao.getLimite() - dto.getValor());
+            cartao.setFatura(cartao.getFatura() + dto.getValor());
+        } else if ("débito".equalsIgnoreCase(cartao.getTipo())) {
+            Conta conta = cartao.getConta();
+            if (dto.getValor() > conta.getSaldo()) {
+                throw new IllegalArgumentException("Saldo insuficiente na conta");
+            }
+
+            conta.setSaldo(conta.getSaldo() - dto.getValor());
+            contaRepository.save(conta);
+        }
+
+        cartaoRepository.save(cartao);
+    }
 
 
 }
