@@ -4,15 +4,17 @@ import br.com.cdb.bancodigital_api.dto.*;
 import br.com.cdb.bancodigital_api.exception.ResourceNotFoundException;
 import br.com.cdb.bancodigital_api.model.Cartao;
 import br.com.cdb.bancodigital_api.model.Conta;
-import br.com.cdb.bancodigital_api.model.LancamentoCartao;
+import br.com.cdb.bancodigital_api.model.LancamentoFatura;
 import br.com.cdb.bancodigital_api.repository.CartaoRepository;
 import br.com.cdb.bancodigital_api.repository.ContaRepository;
-import br.com.cdb.bancodigital_api.repository.LancamentoCartaoRepository;
+import br.com.cdb.bancodigital_api.repository.LancamentoFaturaRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,18 +22,23 @@ import java.util.stream.Collectors;
 public class CartaoService {
     private final CartaoRepository cartaoRepository;
     private final ContaRepository contaRepository;
-    private final LancamentoCartaoRepository lancamentoCartaoRepository;
+    private final LancamentoFaturaRepository lancamentoFaturaRepository;
 
-    @Autowired
     private final ModelMapper mapper;
 
-    public CartaoService(CartaoRepository cartaoRepository, ContaRepository contaRepository, LancamentoCartaoRepository lancamentoCartaoRepository) {
+    @Autowired
+    public CartaoService(
+            CartaoRepository cartaoRepository,
+            ContaRepository contaRepository,
+            LancamentoFaturaRepository lancamentoFaturaRepository
+    ) {
         this.cartaoRepository = cartaoRepository;
         this.contaRepository = contaRepository;
-        this.lancamentoCartaoRepository = lancamentoCartaoRepository;
+        this.lancamentoFaturaRepository = lancamentoFaturaRepository;
         this.mapper = new ModelMapper();
     }
-    public CartaoDTO salvar(CartaoDTO dto){
+
+    public CartaoDTO salvar(CartaoDTO dto) {
         Conta conta = contaRepository.findById(dto.getContaId())
                 .orElseThrow(() -> new ResourceNotFoundException("Conta não encontrada"));
 
@@ -39,17 +46,20 @@ public class CartaoService {
         cartao.setConta(conta);
         return mapper.map(cartaoRepository.save(cartao), CartaoDTO.class);
     }
-    public CartaoDTO buscarPorId(Long id){
+
+    public CartaoDTO buscarPorId(Long id) {
         Cartao cartao = cartaoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cartão não encontrado"));
         return mapper.map(cartao, CartaoDTO.class);
     }
+
     public List<CartaoDTO> listarTodos() {
         return cartaoRepository.findAll()
                 .stream()
                 .map(cartao -> mapper.map(cartao, CartaoDTO.class))
                 .collect(Collectors.toList());
     }
+
     public CartaoDTO atualizar(Long id, CartaoDTO dto) {
         Cartao cartao = cartaoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cartão não encontrado"));
@@ -67,11 +77,13 @@ public class CartaoService {
 
         return mapper.map(cartaoRepository.save(cartao), CartaoDTO.class);
     }
+
     public void deletar(Long id) {
         Cartao cartao = cartaoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cartão não encontrado"));
         cartaoRepository.delete(cartao);
     }
+
     @Transactional
     public void realizarPagamento(Long cartaoId, PagamentoCartaoDTO dto) {
         Cartao cartao = cartaoRepository.findById(cartaoId)
@@ -88,6 +100,15 @@ public class CartaoService {
 
             cartao.setLimite(cartao.getLimite() - dto.getValor());
             cartao.setFatura(cartao.getFatura() + dto.getValor());
+
+            LancamentoFatura lancamento = LancamentoFatura.builder()
+                    .descricao(dto.getDescricao())
+                    .valor(dto.getValor())
+                    .data(LocalDate.now())
+                    .cartao(cartao)
+                    .build();
+
+            lancamentoFaturaRepository.save(lancamento);
         } else if ("débito".equalsIgnoreCase(cartao.getTipo())) {
             Conta conta = cartao.getConta();
             if (dto.getValor() > conta.getSaldo()) {
@@ -100,6 +121,7 @@ public class CartaoService {
 
         cartaoRepository.save(cartao);
     }
+
     @Transactional
     public void alterarLimite(Long cartaoId, AlterarLimiteDTO dto) {
         Cartao cartao = cartaoRepository.findById(cartaoId)
@@ -120,6 +142,7 @@ public class CartaoService {
         cartao.setLimite(dto.getNovoLimite());
         cartaoRepository.save(cartao);
     }
+
     @Transactional
     public void atualizarStatus(Long cartaoId, AtualizarStatusCartaoDTO dto) {
         Cartao cartao = cartaoRepository.findById(cartaoId)
@@ -132,6 +155,7 @@ public class CartaoService {
         cartao.setStatus(dto.getStatus());
         cartaoRepository.save(cartao);
     }
+
     @Transactional
     public void alterarSenha(Long id, AlterarSenhaCartaoDTO dto) {
         Cartao cartao = cartaoRepository.findById(id)
@@ -140,32 +164,28 @@ public class CartaoService {
         cartao.setSenha(dto.getNovaSenha());
         cartaoRepository.save(cartao);
     }
-    public FaturaDTO consultarFatura(Long id) {
-        Cartao cartao = cartaoRepository.findById(id)
+
+    public FaturaDTO consultarFatura(Long cartaoId) {
+        Cartao cartao = cartaoRepository.findById(cartaoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cartão não encontrado"));
 
-        if (!"Crédito".equalsIgnoreCase(cartao.getTipo())) {
-            throw new IllegalArgumentException("Fatura disponível apenas para cartões de crédito.");
-        }
+        List<LancamentoFatura> lancamentos = lancamentoFaturaRepository.findByCartaoId(cartaoId);
 
-        List<LancamentoCartao> lancamentos = lancamentoCartaoRepository.findByCartaoId(id);
+        List<LancamentoDTO> lancamentoDTOs = lancamentos.stream().map(l -> LancamentoDTO.builder()
+                        .descricao(l.getDescricao())
+                        .valor(l.getValor())
+                        .data(l.getData())
+                        .pago(true)
+                        .build())
+                .collect(Collectors.toList());
 
-        List<LancamentoFaturaDTO> dtoList = lancamentos.stream().map(l -> new LancamentoFaturaDTO(
-                l.getDescricao(), l.getValor(), l.getData(), l.getPago()
-        )).toList();
 
-        double total = lancamentos.stream()
-                .filter(l -> !l.getPago())
-                .mapToDouble(LancamentoCartao::getValor)
-                .sum();
+        double total = lancamentos.stream().mapToDouble(LancamentoFatura::getValor).sum();
 
-        FaturaDTO fatura = new FaturaDTO();
-        fatura.setCartaoId(cartao.getId());
-        fatura.setTotal(total);
-        fatura.setLancamentos(dtoList);
-
-        return fatura;
+        return FaturaDTO.builder()
+                .cartaoId(cartao.getId())
+                .total(total)
+                .lancamentos(lancamentoDTOs)
+                .build();
     }
-
 }
-
