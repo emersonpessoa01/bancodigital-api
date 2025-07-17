@@ -1,6 +1,7 @@
 package br.com.cdb.bancodigital_api.service;
 
 import br.com.cdb.bancodigital_api.dto.ContaDTO;
+import br.com.cdb.bancodigital_api.dto.DepositoDTO;
 import br.com.cdb.bancodigital_api.dto.PixRequestDTO;
 import br.com.cdb.bancodigital_api.dto.TransferenciaDTO;
 import br.com.cdb.bancodigital_api.exception.ResourceNotFoundException;
@@ -119,6 +120,18 @@ public class ContaService {
 
         contaRepository.save(origem);
         contaRepository.save(destino);
+    }
+
+    public void realizarDeposito(Long contaId, DepositoDTO dto) {
+        Conta conta = contaRepository.findById(contaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Conta não encontrada"));
+
+        if (dto.getValor() <= 0) {
+            throw new IllegalArgumentException("Valor do depósito deve ser positivo");
+        }
+
+        conta.setSaldo(conta.getSaldo() + dto.getValor());
+        contaRepository.save(conta);
     }
 
 
