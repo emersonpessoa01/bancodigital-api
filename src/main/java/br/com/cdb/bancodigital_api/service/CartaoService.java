@@ -1,5 +1,7 @@
 package br.com.cdb.bancodigital_api.service;
 
+import br.com.cdb.bancodigital_api.dto.AlterarLimiteDTO;
+import br.com.cdb.bancodigital_api.dto.AtualizarStatusCartaoDTO;
 import br.com.cdb.bancodigital_api.dto.CartaoDTO;
 import br.com.cdb.bancodigital_api.dto.PagamentoCartaoDTO;
 import br.com.cdb.bancodigital_api.exception.ResourceNotFoundException;
@@ -74,7 +76,7 @@ public class CartaoService {
         Cartao cartao = cartaoRepository.findById(cartaoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cartão não encontrado"));
 
-        if (Boolean.FALSE.equals(cartao.getAtivo())) {
+        if (Boolean.FALSE.equals(cartao.getStatus())) {
             throw new IllegalStateException("Cartão está inativo");
         }
 
@@ -97,5 +99,37 @@ public class CartaoService {
 
         cartaoRepository.save(cartao);
     }
+    @Transactional
+    public void alterarLimite(Long cartaoId, AlterarLimiteDTO dto) {
+        Cartao cartao = cartaoRepository.findById(cartaoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cartão não encontrado"));
 
+        if (Boolean.FALSE.equals(cartao.getStatus())) {
+            throw new IllegalStateException("Cartão está inativo");
+        }
+
+        if (!"crédito".equalsIgnoreCase(cartao.getTipo())) {
+            throw new IllegalArgumentException("Apenas cartões de crédito podem ter limite alterado");
+        }
+
+        if (dto.getNovoLimite() == null || dto.getNovoLimite() <= 0) {
+            throw new IllegalArgumentException("Limite inválido");
+        }
+
+        cartao.setLimite(dto.getNovoLimite());
+        cartaoRepository.save(cartao);
+    }
+    @Transactional
+    public void atualizarStatus(Long cartaoId, AtualizarStatusCartaoDTO dto) {
+        Cartao cartao = cartaoRepository.findById(cartaoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cartão não encontrado"));
+
+        if (dto.getStatus() == null) {
+            throw new IllegalArgumentException("Status não pode ser nulo");
+        }
+
+        cartao.setStatus(dto.getStatus());
+        cartaoRepository.save(cartao);
+    }
 }
+
