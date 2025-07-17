@@ -1,9 +1,6 @@
 package br.com.cdb.bancodigital_api.controller;
 
-import br.com.cdb.bancodigital_api.dto.AlterarLimiteDTO;
-import br.com.cdb.bancodigital_api.dto.AtualizarStatusCartaoDTO;
-import br.com.cdb.bancodigital_api.dto.CartaoDTO;
-import br.com.cdb.bancodigital_api.dto.PagamentoCartaoDTO;
+import br.com.cdb.bancodigital_api.dto.*;
 import br.com.cdb.bancodigital_api.service.CartaoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -62,6 +59,10 @@ public class CartaoController {
         return ResponseEntity.ok("Status do cartão atualizado com sucesso.");
     }
 
-
+    @PutMapping("/{id}/senha")
+    public ResponseEntity<String> alterarSenha(@PathVariable Long id, @RequestBody @Valid AlterarSenhaCartaoDTO dto) {
+        service.alterarSenha(id, dto);
+        return ResponseEntity.ok("Senha do cartão atualizada com sucesso.");
+    }
 
 }
