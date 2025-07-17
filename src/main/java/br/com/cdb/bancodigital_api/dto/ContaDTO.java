@@ -1,5 +1,6 @@
 package br.com.cdb.bancodigital_api.dto;
 
+import br.com.cdb.bancodigital_api.enums.TipoConta;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ public class ContaDTO {
     private String agencia;
     private Double saldo;
     private Long clienteId; // ID do cliente associado à conta
-    private String tipo;
+    private TipoConta tipo; // no DTO
+
 
 }
