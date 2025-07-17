@@ -64,5 +64,10 @@ public class CartaoController {
         service.alterarSenha(id, dto);
         return ResponseEntity.ok("Senha do cartão atualizada com sucesso.");
     }
+    @GetMapping("/{id}/fatura")
+    public ResponseEntity<FaturaDTO> consultarFatura(@PathVariable Long id) {
+        return ResponseEntity.ok(service.consultarFatura(id));
+    }
+
 
 }
