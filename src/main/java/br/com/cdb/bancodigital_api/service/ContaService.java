@@ -1,8 +1,8 @@
 package br.com.cdb.bancodigital_api.service;
 
 import br.com.cdb.bancodigital_api.dto.ContaDTO;
-import br.com.cdb.bancodigital_api.dto.DepositoDTO;
 import br.com.cdb.bancodigital_api.dto.PixRequestDTO;
+import br.com.cdb.bancodigital_api.dto.TransacaoDTO;
 import br.com.cdb.bancodigital_api.dto.TransferenciaDTO;
 import br.com.cdb.bancodigital_api.exception.ResourceNotFoundException;
 import br.com.cdb.bancodigital_api.model.Cliente;
@@ -122,7 +122,7 @@ public class ContaService {
         contaRepository.save(destino);
     }
 
-    public void realizarDeposito(Long contaId, DepositoDTO dto) {
+    public void realizarDeposito(Long contaId, TransacaoDTO dto) {
         Conta conta = contaRepository.findById(contaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Conta não encontrada"));
 
@@ -133,6 +133,22 @@ public class ContaService {
         conta.setSaldo(conta.getSaldo() + dto.getValor());
         contaRepository.save(conta);
     }
+    public void realizarSaque(Long contaId, TransacaoDTO dto) {
+        Conta conta = contaRepository.findById(contaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Conta não encontrada"));
+
+        if (dto.getValor() <= 0) {
+            throw new IllegalArgumentException("Valor do saque deve ser positivo");
+        }
+
+        if (dto.getValor() > conta.getSaldo()) {
+            throw new IllegalArgumentException("Saldo insuficiente para o saque");
+        }
+
+        conta.setSaldo(conta.getSaldo() - dto.getValor());
+        contaRepository.save(conta);
+    }
+
 
 
 }
