@@ -26,5 +26,7 @@ public class Cartao {
     private Conta conta; // Associação com a conta bancária a que o cartão pertence
 
     private Boolean status; // true = ativo, false = inativo
+    private String senha;
+
 
 }
