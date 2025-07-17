@@ -1,6 +1,7 @@
 package br.com.cdb.bancodigital_api.service;
 
 import br.com.cdb.bancodigital_api.dto.ContaDTO;
+import br.com.cdb.bancodigital_api.dto.PixRequestDTO;
 import br.com.cdb.bancodigital_api.dto.TransferenciaDTO;
 import br.com.cdb.bancodigital_api.exception.ResourceNotFoundException;
 import br.com.cdb.bancodigital_api.model.Cliente;
@@ -98,4 +99,27 @@ public class ContaService {
         contaRepository.save(origem);
         contaRepository.save(destino);
     }
+    public void realizarPix(Long contaOrigemId, PixRequestDTO dto) {
+        Conta origem = contaRepository.findById(contaOrigemId)
+                .orElseThrow(() -> new ResourceNotFoundException("Conta de origem não encontrada"));
+
+        Conta destino = contaRepository.findById(dto.getContaDestinoId())
+                .orElseThrow(() -> new ResourceNotFoundException("Conta de destino não encontrada"));
+
+        if (dto.getValor() <= 0) {
+            throw new IllegalArgumentException("Valor do Pix deve ser positivo");
+        }
+
+        if (origem.getSaldo() < dto.getValor()) {
+            throw new IllegalArgumentException("Saldo insuficiente na conta de origem");
+        }
+
+        origem.setSaldo(origem.getSaldo() - dto.getValor());
+        destino.setSaldo(destino.getSaldo() + dto.getValor());
+
+        contaRepository.save(origem);
+        contaRepository.save(destino);
+    }
+
+
 }
