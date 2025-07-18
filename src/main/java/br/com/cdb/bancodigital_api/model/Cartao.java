@@ -35,6 +35,15 @@ public class Cartao {
 
     private Double limiteDiario;
 
+    @PrePersist
+    public void prePersist() {
+        if (this.status == null) {
+            this.status = true;
+        }
+        if (this.fatura == null) {
+            this.fatura = 0.0;
+        }
+    }
 
 
 }
