@@ -18,7 +18,7 @@ git clone https://github.com/emersonpessoa01/bancodigital-api.git
 cd bancodigital-api
 ./mvnw spring-boot:run
 
-Console do banco H2: http://localhost:8080/h2-console
+Console do banco H2: http://localhost:8081/h2-console
 JDBC URL: jdbc:h2:mem:testdb — Usuário: sa — Senha: (vazio)
 ```
 👤 Cliente
