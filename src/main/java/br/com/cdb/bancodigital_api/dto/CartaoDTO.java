@@ -16,7 +16,7 @@ public class CartaoDTO {
     private String tipo; // Ex: "Crédito", "Débito"
     private Double limite;
     private Long contaId; // ID da conta bancária a que o cartão pertence
-    private Boolean status; // novo campo adicionado
+    private Boolean status = true;
     private Double limiteDiario;
 
 }
