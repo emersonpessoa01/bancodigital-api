@@ -24,12 +24,18 @@ public class ContaService {
     private final CartaoRepository cartaoRepository;
     private final ModelMapper mapper;
 
-    public ContaService(ContaRepository contaRepository, ClienteRepository clienteRepository, CartaoRepository cartaoRepository) {
+    public ContaService(
+            ContaRepository contaRepository,
+            ClienteRepository clienteRepository,
+            CartaoRepository cartaoRepository,
+            ModelMapper mapper // <- injete aqui
+    ) {
         this.contaRepository = contaRepository;
         this.clienteRepository = clienteRepository;
         this.cartaoRepository = cartaoRepository;
-        this.mapper = new ModelMapper();
+        this.mapper = mapper; // use o que foi injetado
     }
+
 
     public ContaDTO salvar(ContaDTO dto) {
         Cliente cliente = clienteRepository.findById(dto.getClienteId())
@@ -37,7 +43,6 @@ public class ContaService {
 
         Conta conta = mapper.map(dto, Conta.class);
 
-        // Validação automática via enum (opcional, se quiser controlar melhor)
         if (conta.getTipo() == null) {
             throw new IllegalArgumentException("Tipo de conta é obrigatório");
         }
