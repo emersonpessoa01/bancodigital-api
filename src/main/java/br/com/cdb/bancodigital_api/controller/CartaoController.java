@@ -73,7 +73,10 @@ public class CartaoController {
         service.pagarFatura(id);
         return ResponseEntity.ok().build();
     }
-
+    @PutMapping("/{id}/limite-diario")
+    public ResponseEntity<CartaoDTO> alterarLimiteDiario(@PathVariable Long id, @RequestBody LimiteDiarioDTO dto) {
+        return ResponseEntity.ok(service.alterarLimiteDiario(id, dto.getNovoLimiteDiario()));
+    }
 
 
 }
