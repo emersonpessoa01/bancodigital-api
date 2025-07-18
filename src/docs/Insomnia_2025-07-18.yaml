@@ -1,0 +1,826 @@
+type: collection.insomnia.rest/5.0
+name: Banco Digital API
+meta:
+  id: wrk_562578f2bdbc434180f6946790a42a69
+  created: 1750553127881
+  modified: 1750553127881
+  description: ""
+collection:
+  - name: Cliente
+    meta:
+      id: fld_9bd2179819b5430385a84290112a43a2
+      created: 1751029527032
+      modified: 1752803246334
+      sortKey: -1751029527032
+      description: ""
+    children:
+      - url: "{{ _.url }}/clientes/"
+        name: Add Cliente Body
+        meta:
+          id: req_5de7219384824f3d885d7721f8cecca1
+          created: 1750553127899
+          modified: 1752846099300
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529652
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome":"Emerson Pessoa",
+            	"cpf":13214567890,
+            	"email":"emea@gmail.com",
+            	"telefone":"9999-9988"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/clientes"
+        name: Listar clientes
+        meta:
+          id: req_94575c182d91423b9ea7c072219d1b52
+          created: 1750553127902
+          modified: 1752701774519
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529252
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/clientes/1"
+        name: Listar clientes pelo ID
+        meta:
+          id: req_bc684342e3b642c4bbf40a12076ed718
+          created: 1750634037661
+          modified: 1752701778828
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529352
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/clientes/1"
+        name: Atualizar clientes pelo ID
+        meta:
+          id: req_ce2bf57b0a354eeea9770ae7903be4c6
+          created: 1750634500062
+          modified: 1751057932062
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529452
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            		"id": 1,
+            		"nome": "Luciene dos Santos Ferreira",
+            		"cpf": "34567890123",
+            		"email": "lucieneferreira@gmail.com",
+            		"telefone": "9999-8899"
+            	}
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/clientes/1"
+        name: Deletar clientes pelo ID
+        meta:
+          id: req_a4149574c45e4315ac6c21b95fa3258d
+          created: 1750634671688
+          modified: 1751029534917
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529552
+        method: DELETE
+        body:
+          mimeType: application/json
+          text: ""
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Conta
+    meta:
+      id: fld_73e89fcf26994cbf9f170353379acb61
+      created: 1751029682092
+      modified: 1752800703065
+      sortKey: -1745816323418
+      description: ""
+    children:
+      - url: "{{ _.url }}/contas"
+        name: Criar conta
+        meta:
+          id: req_cc920cdb00604c3e8524e9168daf5f35
+          created: 1751029682095
+          modified: 1752850495857
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529652
+        method: POST
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "numero": "3456782",
+              "agencia": "0001",
+              "saldo": 2000.0,
+            	"tipo": "poupanca",
+              "clienteId": 1
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/contas"
+        name: Listar conta
+        meta:
+          id: req_38351fb5fa944a2d8be3de0c4aa89316
+          created: 1751029682098
+          modified: 1752766191187
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529252
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/contas/1"
+        name: Listar conta pelo ID
+        meta:
+          id: req_8117d38d4657408d8553da201d657383
+          created: 1751029682100
+          modified: 1752766028053
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529352
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/contas/1"
+        name: Atualizar conta pelo ID
+        meta:
+          id: req_a89716f71ff344fbb3e6501ae160d7b9
+          created: 1751029682103
+          modified: 1751033752243
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529452
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "numero": "000123",
+              "agencia": "0001",
+              "saldo": 1500.00,
+              "clienteId": 1
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/contas/2"
+        name: Deletar conta pelo ID
+        meta:
+          id: req_e3e6cfcc2cc24ff7bf29b43a29f6cbbb
+          created: 1751029682105
+          modified: 1752845542769
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529552
+        method: DELETE
+        body:
+          mimeType: application/json
+          text: ""
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/contas/1/saldo"
+        name: Consultar saldo da conta
+        meta:
+          id: req_49e9de06c4fd45c4b085af1e11843929
+          created: 1751033880267
+          modified: 1752702687990
+          isPrivate: false
+          description: ""
+          sortKey: -1750425553544
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/contas/2/transferencia"
+        name: Transferência entre contas
+        meta:
+          id: req_536baff7d09342dc9be2d4abf1dffb14
+          created: 1751034293742
+          modified: 1752845884248
+          isPrivate: false
+          description: ""
+          sortKey: -1750123565690
+        method: POST
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "contaDestinoId":1 ,
+              "valor": 200.00
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/contas/1/pix"
+        name: Pagamento via pix
+        meta:
+          id: req_14ca32d7050a432b9eca45943df92c55
+          created: 1752759289258
+          modified: 1752759535943
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529602
+        method: POST
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "contaDestinoId": 2,
+              "valor": 100.00
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/contas/1/deposito"
+        name: Realizar depósito na conta
+        meta:
+          id: req_7220c00cc4e543dcaaee77009b9acbcb
+          created: 1752760252050
+          modified: 1752800770822
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529752
+        method: POST
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "valor": 5000.00
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/contas/1/saque"
+        name: Realizar saque de conta
+        meta:
+          id: req_152df33fe0044cc58819908704644cce
+          created: 1752762097878
+          modified: 1752762771319
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529852
+        method: POST
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "valor": 200.00
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/contas/1/manutencao"
+        name: Aplicar taxa de manutenção
+        meta:
+          id: req_d282064cae5a4bfdaaf88f5845343344
+          created: 1752762725461
+          modified: 1752763536456
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529802
+        method: PUT
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/contas/3/rendimentos"
+        name: Aplicar rendimentos(Conta Poupança)
+        meta:
+          id: req_2a06593d5baa455eb797d1dcbe911bcf
+          created: 1752764184181
+          modified: 1752846179617
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529952
+        method: PUT
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Cartao
+    meta:
+      id: fld_13b727182a5b42258592569ddeceb972
+      created: 1751155610366
+      modified: 1752803244994
+      sortKey: -1743209721611
+      description: ""
+    children:
+      - url: "{{ _.url }}/cartoes"
+        name: Emitir novo cartão
+        meta:
+          id: req_a209f6e48b054c37a8a2dc22cd7fa356
+          created: 1751155610372
+          modified: 1752850505255
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529652
+        method: POST
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "numero": "5111111111111111",
+              "bandeira": "VISA",
+              "tipo": "Crédito",
+              "limite": 6000.00,
+              "contaId": 1
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/cartoes"
+        name: Listar cartoes
+        meta:
+          id: req_39cd83cc29a94d17bde4a6933361b675
+          created: 1751155610378
+          modified: 1752800565401
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529252
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/cartoes/1"
+        name: Listar cartao pelo ID
+        meta:
+          id: req_ca15ab093d48436793bac76bb855b6b2
+          created: 1751155610381
+          modified: 1752796775079
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529352
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/cartoes/3"
+        name: Atualizar cartao pelo ID
+        meta:
+          id: req_b308fba280f14837b495e8a15378b460
+          created: 1751155610384
+          modified: 1752800506916
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529452
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "numero": "5111111111111112",
+              "bandeira": "VISA",
+              "tipo": "Crédito",
+              "limite": 4000.00,
+              "contaId": 1
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/cartoes/2"
+        name: Deletar cartao pelo ID
+        meta:
+          id: req_3e06373d8e464fba98682069c52c11c3
+          created: 1751155610388
+          modified: 1751240337172
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529552
+        method: DELETE
+        body:
+          mimeType: application/json
+          text: ""
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/cartoes/1/pagamento"
+        name: " Realizar um pagamento com o cartão"
+        meta:
+          id: req_962c03b1ff5941b98fa530c1bd5e236f
+          created: 1752772354239
+          modified: 1752800022439
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529752
+        method: POST
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "valor":450.0,
+              "descricao": "Compra na loja K"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/cartoes/2/limite"
+        name: Alterar limite do cartão
+        meta:
+          id: req_e3fa672389074a5bab2c3bdac0b7ad48
+          created: 1752773174644
+          modified: 1752846301879
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529702
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "novoLimite": 10000.0
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/cartoes/2/status"
+        name: Ativar ou desativar cartão
+        meta:
+          id: req_b0ad8c8f7d29450383f41264d5772b7e
+          created: 1752774367843
+          modified: 1752846330595
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529727
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "status": true
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/cartoes/1/senha"
+        name: Alterar senha do cartão
+        meta:
+          id: req_9380113376194861bf03821eefff9fc4
+          created: 1752778478303
+          modified: 1752799904315
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529739.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "novaSenha": "1234"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/cartoes/1/fatura"
+        name: Consultar fatura do cartão de crédito
+        meta:
+          id: req_39bb9e28ffdb4feb8c970ef76f51be2f
+          created: 1752779531950
+          modified: 1752800563084
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529733.25
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/cartoes/1/fatura/pagamento"
+        name: Realizar pagamento da fatura do cartão
+        meta:
+          id: req_5416e888ad764a4fb7e7f7426b554c97
+          created: 1752786942350
+          modified: 1752787548134
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529748.875
+        method: POST
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.url }}/cartoes/2/limite-diario"
+        name: Alterar limite diário do cartão
+        meta:
+          id: req_06d3856e731448bdadb2d17e7c36bca2
+          created: 1752796540715
+          modified: 1752799713272
+          isPrivate: false
+          description: ""
+          sortKey: -1751029529750.4375
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "novoLimiteDiario": 1000.00
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_464c267048b34a2780f0c66a5c278117
+    created: 1750553127893
+    modified: 1752842792753
+  cookies:
+    - key: JSESSIONID
+      value: 219DEDC58D19C3C19666401B5725826F
+      domain: localhost
+      path: /
+      httpOnly: true
+      hostOnly: true
+      creation: 2025-06-22T00:49:15.574Z
+      lastAccessed: 2025-07-18T12:46:32.752Z
+      id: 5e478ba9-89ae-495e-a806-9b8058aa34d7
+environments:
+  name: Base Environment
+  meta:
+    id: env_510b98b1871d40a4a30315956f041806
+    created: 1750553127888
+    modified: 1750553127888
+    isPrivate: false
+  data:
+    url: http://localhost:8081

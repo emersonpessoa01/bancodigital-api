@@ -21,6 +21,14 @@ cd bancodigital-api
 Console do banco H2: http://localhost:8081/h2-console
 JDBC URL: jdbc:h2:mem:testdb — Usuário: sa — Senha: (vazio)
 ```
+
+
+📦 Importação da coleção de testes no Insomnia:
+
+[Download da coleção](./src/docs/Insomnia_2025-07-18.yaml)
+
+path: ./src/docs/Insomnia_2025-07-18.yaml
+
 👤 Cliente
 
 | Método | Endpoint       | Descrição                |
