@@ -27,7 +27,9 @@ JDBC URL: jdbc:h2:mem:testdb — Usuário: sa — Senha: (vazio)
 
 [Download da coleção](./src/docs/Insomnia_2025-07-18.yaml)
 
-path: ./src/docs/Insomnia_2025-07-18.yaml
+path: 
+```./src/docs/Insomnia_2025-07-18.yaml
+```
 
 👤 Cliente
 
