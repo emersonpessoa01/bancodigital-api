@@ -18,5 +18,4 @@ public class ContaDTO {
     private Long clienteId; // ID do cliente associado à conta
     private TipoConta tipo; // no DTO
 
-
 }
