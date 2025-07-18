@@ -44,6 +44,17 @@ public class CartaoService {
 
         Cartao cartao = mapper.map(dto, Cartao.class);
         cartao.setConta(conta);
+
+        // ✅ Garante que status nunca seja null
+        if (cartao.getStatus() == null) {
+            cartao.setStatus(true); // ou false, se desejar criar inativo por padrão
+        }
+
+        // ✅ Garante que fatura comece em 0.0
+        if (cartao.getFatura() == null) {
+            cartao.setFatura(0.0);
+        }
+
         return mapper.map(cartaoRepository.save(cartao), CartaoDTO.class);
     }
 
@@ -227,5 +238,17 @@ public class CartaoService {
         cartao.setFatura(0.0);
         cartaoRepository.save(cartao);
     }
+    public CartaoDTO alterarLimiteDiario(Long id, Double novoLimite) {
+        Cartao cartao = cartaoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cartão não encontrado"));
+
+        if (!"Débito".equalsIgnoreCase(cartao.getTipo())) {
+            throw new IllegalArgumentException("Apenas cartões de débito podem ter limite diário alterado.");
+        }
+
+        cartao.setLimiteDiario(novoLimite);
+        return mapper.map(cartaoRepository.save(cartao), CartaoDTO.class);
+    }
+
 
 }
